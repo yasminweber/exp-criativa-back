@@ -56,9 +56,9 @@ module.exports = {
     // //delete
     // async delete(req, res) {
     //     try {
-    //         const updatedOffer = await Offer.findOneAndDelete({_id: req.params.id});
-    //         //console.log(updatedOffer);
-    //         return res.json(updatedOffer);
+    //         const project = await Offer.findOneAndDelete({_id: req.params.id});
+    //         //console.log(project);
+    //         return res.json(project);
     //     } catch (error) {
     //         return res.status(400).json({ error });
     //     }
