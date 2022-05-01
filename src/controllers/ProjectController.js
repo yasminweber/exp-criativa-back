@@ -6,13 +6,13 @@ module.exports = {
     async store(req, res) {
         try {
             const { user } = req.auth;
-            console.log({user})
+            console.log({ user })
             req.body.creator = user._id;
             const newProject = await Project.create(req.body);
             console.log(newProject)
             return res.status(201).json(newProject);
         } catch (error) {
-            console.log( "erro da criação do projeto", error)
+            console.log("erro da criação do projeto", error)
             return res.status(400).json({ error });
         }
     },
@@ -20,7 +20,7 @@ module.exports = {
     // Get 1 id
     async showId(req, res) {
         try {
-            const project = await Project.findOne({_id: req.params.id}).populate("creator");
+            const project = await Project.findOne({ _id: req.params.id }).populate("creator");
             console.log(project);
             return res.json(project);
         } catch (error) {
@@ -44,23 +44,24 @@ module.exports = {
     // Update project
     async update(req, res) {
         try {
-            const updatedProject = await Project.findOneAndUpdate({_id: req.params.id}, req.body);
+            const updatedProject = await Project.findOneAndUpdate({ _id: req.params.id }, req.body);
             console.log(updatedProject);
             return res.json(updatedProject);
         } catch (error) {
-            console.log("erro do update de projeto" , error)
+            console.log("erro do update de projeto", error)
             return res.status(400).json({ error });
         }
-    }
-    
-    // //delete
-    // async delete(req, res) {
-    //     try {
-    //         const project = await Offer.findOneAndDelete({_id: req.params.id});
-    //         //console.log(project);
-    //         return res.json(project);
-    //     } catch (error) {
-    //         return res.status(400).json({ error });
-    //     }
-    // },
+    },
+
+    //delete
+    async delete(req, res) {
+        try {
+            const project = await Project.findOneAndDelete({ _id: req.params.id });
+            //console.log(project);
+            return res.json(project);
+        } catch (error) {
+            console.log("erro pra deletar", error)
+            return res.status(400).json({ error });
+        }
+    },
 }

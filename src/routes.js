@@ -15,6 +15,7 @@ routes.post('/newProject', auth, projectController.store)
 routes.get('/projects/', auth, projectController.showAll)
 routes.get('/project/:id', auth, projectController.showId)
 routes.put('/project/:id', auth, projectController.update)
+routes.delete('/project/:id', auth, projectController.delete)
 
 
 module.exports = routes;
