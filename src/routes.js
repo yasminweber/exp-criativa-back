@@ -17,5 +17,7 @@ routes.get('/project/:id', auth, projectController.showId)
 routes.put('/project/:id', auth, projectController.update)
 routes.delete('/project/:id', auth, projectController.delete)
 
+routes.put('/project/signup/:id', auth, projectController.signup); // Inscreve usuário no projeto
+
 
 module.exports = routes;
