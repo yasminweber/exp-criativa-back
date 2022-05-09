@@ -6,10 +6,10 @@ module.exports = {
     async store(req, res) {
         try {
             const { user } = req.auth;
-            console.log({ user })
+            // console.log({ user })
             req.body.creator = user._id;
             const newProject = await Project.create(req.body);
-            console.log(newProject)
+            // console.log(newProject)
             return res.status(201).json(newProject);
         } catch (error) {
             console.log("erro da criação do projeto", error)
@@ -21,7 +21,7 @@ module.exports = {
     async showId(req, res) {
         try {
             const project = await Project.findOne({ _id: req.params.id }).populate("creator");
-            console.log(project);
+            // console.log(project);
             return res.json(project);
         } catch (error) {
             console.log("erro update project", error)
@@ -33,7 +33,7 @@ module.exports = {
     async showAll(req, res) {
         try {
             const projects = await Project.find().populate("creator");
-            console.log(projects);
+            // console.log(projects);
             return res.json(projects);
         } catch (error) {
             console.log("erro de mostrar todos os projetos", error)
@@ -45,7 +45,7 @@ module.exports = {
     async update(req, res) {
         try {
             const updatedProject = await Project.findOneAndUpdate({ _id: req.params.id }, req.body);
-            console.log(updatedProject);
+            // console.log(updatedProject);
             return res.json(updatedProject);
         } catch (error) {
             console.log("erro do update de projeto", error)
@@ -65,6 +65,36 @@ module.exports = {
         }
     },
 
+    // filter causes
+    async filter(req, res) {
+        try {
+            let filter1, filter2, filter3 = ''
+            filter1 = req.query.filterCause1;
+            filter2 = req.query.filterCause2;
+            filter3 = req.query.filterCause3;
+            console.log("1", filter1, ", 2 ", filter2, ", 3 ", filter3)
+
+            let option = 'teste';
+            if (filter3 === undefined) {
+                if (filter2 === undefined) {
+                    option = {cause: {$in: [filter1]}}
+                } else {
+                    option = {cause: {$in: [filter1, filter2]}}
+                }
+            } else {
+                option = {cause: {$in: [filter1, filter2, filter3]}}
+            }
+            console.log("option", option)
+
+            const projects = await Project.find(option).populate("username");
+            //console.log(projects)
+            return res.json(projects);
+        } catch (error) {
+            console.log("erro carregar filtro", error)
+            return res.status(400).json({ error });
+        }
+    },
+
     // Sign up and Unsubscribe
     async signup(req, res) {
         const { user } = req.auth;
@@ -74,15 +104,15 @@ module.exports = {
         let exists = false;
         let position = 0;
         // se usuário ja está inscrito
-         console.log("projeto", project);
-         console.log("quantidade de inscritos", project.volunteers.lenght);
+        // console.log("projeto", project);
+        // console.log("quantidade de inscritos", project.volunteers.lenght);
         for (let count = 0; count < project.volunteers.length; count++) {
-            console.log("projeto-inscritos-count", project.volunteers[count]);
+            // console.log("projeto-inscritos-count", project.volunteers[count]);
             if (project.volunteers[count] == user._id) {
                 exists = true;
                 position = count;
             }
-            console.log("user-id", user._id);
+            // console.log("user-id", user._id);
         }
         if (exists) {
             project.volunteers.splice(position); // tira o user, se ja estiver inscrito
