@@ -9,7 +9,7 @@ const projectController = require('./controllers/ProjectController');
 const causeController = require('./controllers/CauseController');
 
 
-routes.post('/cadastro', userController.cadastro);
+routes.post('/register', userController.cadastro);
 
 routes.post('/login', authController.login);
 
