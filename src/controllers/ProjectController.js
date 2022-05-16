@@ -68,29 +68,49 @@ module.exports = {
     // filter causes
     async filter(req, res) {
         try {
-            let filter1, filter2, filter3 = ''
+            let filter1, filter2, filter3, filter4, filter5 = ''
             filter1 = req.query.filterCause1;
             filter2 = req.query.filterCause2;
             filter3 = req.query.filterCause3;
-            console.log("1", filter1, ", 2 ", filter2, ", 3 ", filter3)
+            filter4 = req.query.filterCause4;
+            filter5 = req.query.filterCause5;
+            console.log("1", filter1, ", 2 ", filter2, ", 3 ", filter3, ", 4 ", filter4, ", 5 ", filter5)
 
             let option = 'teste';
-            if (filter3 === undefined) {
-                if (filter2 === undefined) {
-                    option = {cause: {$in: [filter1]}}
-                } else {
-                    option = {cause: {$in: [filter1, filter2]}}
+
+            if (filter5 === undefined) {
+                if (filter4 === undefined) {
+                    if (filter3 === undefined) {
+                        if (filter2 === undefined) {
+                            option = {cause: {$in: [filter1]}}
+                        }
+                        option = {cause: {$in: [filter1, filter2]}}
+                    }
+                    option = {cause: {$in: [filter1, filter2, filter3]}}
                 }
+                option = {cause: {$in: [filter1, filter2, filter3, filter4]}}
             } else {
-                option = {cause: {$in: [filter1, filter2, filter3]}}
+                option = {cause: {$in: [filter1, filter2, filter3, filter4, filter5]}}
             }
-            console.log("option", option)
+
+            //console.log("option", option)
 
             const projects = await Project.find(option).populate("username");
             //console.log(projects)
             return res.json(projects);
         } catch (error) {
             console.log("erro carregar filtro", error)
+            return res.status(400).json({ error });
+        }
+    },
+
+    // Projects from user
+    async showPerUser(req, res) {
+        try {
+            const project = await Project.find({creator: req.params.id}).populate("username");
+            //console.log(project);
+            return res.json(project);
+        } catch (error) {
             return res.status(400).json({ error });
         }
     },
