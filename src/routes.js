@@ -16,6 +16,10 @@ routes.post('/login', authController.login);
 // Admin routes
 routes.post('/registerAdmin', adminController.cadastro);
 routes.post('/loginAdmin', authController.loginAdmin);
+routes.get('/admins', adminController.showAll); // get all admins
+routes.get('/admin/:id', adminController.showId); // get 1 admin
+routes.put('/admin/:id', auth, adminController.update) // edit admin
+routes.delete('/admin/:id', auth, adminController.delete) // delete admin
 
 
 routes.post('/newProject', auth, projectController.store)
