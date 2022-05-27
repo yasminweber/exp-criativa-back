@@ -44,6 +44,7 @@ module.exports = {
     // Update project
     async update(req, res) {
         try {
+            // console.log("update info", req)
             const updatedProject = await Project.findOneAndUpdate({ _id: req.params.id }, req.body);
             // console.log(updatedProject);
             return res.json(updatedProject);
