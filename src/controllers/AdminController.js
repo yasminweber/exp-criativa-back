@@ -44,7 +44,7 @@ module.exports = {
         }
     },
 
-    // Update user
+    // Update admin
     async update(req, res) {
         try {
             const updatedAdmin = await Admin.findOneAndUpdate({ _id: req.params.id }, req.body);
@@ -56,7 +56,7 @@ module.exports = {
         }
     },
 
-    // Delete project
+    // Delete user
     async delete(req, res) {
         try {
             const admin = await Admin.findOneAndDelete({ _id: req.params.id });

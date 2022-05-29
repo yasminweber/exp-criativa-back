@@ -13,6 +13,9 @@ const adminController = require('./controllers/AdminController')
 routes.post('/register', userController.cadastro);
 routes.post('/login', authController.login);
 
+// User routes
+routes.put('/user/:id', auth, userController.update) // edit user
+
 // Admin routes
 routes.post('/registerAdmin', adminController.cadastro);
 routes.post('/loginAdmin', authController.loginAdmin);
@@ -21,7 +24,7 @@ routes.get('/admin/:id', adminController.showId); // get 1 admin
 routes.put('/admin/:id', auth, adminController.update) // edit admin
 routes.delete('/admin/:id', auth, adminController.delete) // delete admin
 
-
+// Project routes
 routes.post('/newProject', auth, projectController.store)
 routes.get('/projects/', auth, projectController.showAll)
 routes.get('/project/:id', auth, projectController.showId)

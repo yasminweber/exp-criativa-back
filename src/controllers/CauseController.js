@@ -16,7 +16,7 @@ module.exports = {
     // show all causes
     async showAll(req, res) {
         try {
-            const causes = await Cause.find();
+            const causes = await Cause.find().sort({ cause: 'asc',});
             //console.log(causes);
             return res.json(causes);
         } catch (error) {

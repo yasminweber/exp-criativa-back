@@ -18,5 +18,29 @@ module.exports = {
         } catch (error) {
             return res.status(400).json({ error: "Registation failed" });
         }
+    },
+
+    // Get 1 User
+    async showId(req, res) {
+        try {
+            const user = await User.findOne({ _id: req.params.id });
+            // console.log(user);
+            return res.json(user);
+        } catch (error) {
+            console.log("erro para pegar um user", error)
+            return res.status(400).json({ error });
+        }
+    },
+
+    // Update user
+    async update(req, res) {
+        try {
+            const updatedUser = await User.findOneAndUpdate({ _id: req.params.id }, req.body);
+            // console.log(updatedUser);
+            return res.json(updatedUser);
+        } catch (error) {
+            console.log("erro do update do user", error)
+            return res.status(400).json({ error });
+        }
     }
 }
