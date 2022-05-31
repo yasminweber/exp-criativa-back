@@ -1,5 +1,6 @@
 const express = require('express');
 const Project = require('../models/Project');
+const Post = require('../models/ProjectPost');
 
 module.exports = {
     // Create new project
@@ -143,5 +144,25 @@ module.exports = {
         await Project.findOneAndUpdate({ _id: id }, { volunteers: project.volunteers });
 
         return res.json(project);
+    },
+
+    async newPost(req, res) {
+        const project = await Project.findOne({ _id: req.params.id });
+        let arrayPosts = [];
+        const { user } = req.auth;
+
+        if (project.posts !== undefined){
+            console.log(" dentro if", project.posts.length)
+            for (let count = 0; count < project.posts.length; count ++) {
+                console.log(arrayPosts);
+                arrayPosts.push(project.posts[count]);
+            }
+        }
+
+        const newPost = await Post.create({creator: user, projectRef: req.params.id, title: req.body.title, description: req.body.description});
+        arrayPosts.push(newPost);
+        const updatedUser = await Project.findOneAndUpdate({ _id: req.params.id }, {posts: arrayPosts});
+        console.log(updatedUser);
+        return res.json(updatedUser);
     }
 }

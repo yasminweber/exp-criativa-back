@@ -14,6 +14,7 @@ routes.post('/register', userController.cadastro);
 routes.post('/login', authController.login);
 
 // User routes
+routes.get('/user/:id', auth, userController.showId) // user id
 routes.put('/user/:id', auth, userController.update) // edit user
 
 // Admin routes
@@ -37,6 +38,9 @@ routes.put('/project/signup/:id', auth, projectController.signup); // Inscreve u
 // Causes
 routes.post('/cause', causeController.store);
 routes.get('/cause', causeController.showAll);
+
+// Post de projeto
+routes.post('/newPost/:id', auth, projectController.newPost)
 
 
 module.exports = routes;
