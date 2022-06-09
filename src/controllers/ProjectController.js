@@ -1,6 +1,7 @@
 const express = require('express');
 const Project = require('../models/Project');
 const Post = require('../models/ProjectPost');
+const User = require('../models/User');
 
 module.exports = {
     // Create new project
@@ -21,7 +22,7 @@ module.exports = {
     // Get 1 id
     async showId(req, res) {
         try {
-            const project = await Project.findOne({ _id: req.params.id }).populate("creator");
+            const project = await Project.findOne({ _id: req.params.id }).populate("creator").populate("volunteers").populate("posts").populate("volunteersParticipated");
             // console.log(project);
             return res.json(project);
         } catch (error) {
@@ -124,28 +125,37 @@ module.exports = {
         const project = await Project.findOne({ _id: id });
 
         let exists = false;
-        let position = 0;
+        let positionProject, positionUser = 0;
         // se usuário ja está inscrito
-        // console.log("projeto", project);
-        // console.log("quantidade de inscritos", project.volunteers.lenght);
         for (let count = 0; count < project.volunteers.length; count++) {
-            // console.log("projeto-inscritos-count", project.volunteers[count]);
             if (project.volunteers[count] == user._id) {
                 exists = true;
-                position = count;
+                positionProject = count;
             }
-            // console.log("user-id", user._id);
         }
+        
+        for (let count = 0; count < user.volunteerIn.length; count++) {
+            if (user.volunteerIn[count] == project._id) {
+                positionUser = count;
+            }
+        }
+
         if (exists) {
-            project.volunteers.splice(position); // tira o user, se ja estiver inscrito
+            console.log("usuário já está inscrito")
+            project.volunteers.splice(positionProject); // tira o user, se ja estiver inscrito
+            user.volunteerIn.splice(positionUser); // tira o projeto, se ja estiver inscrito
         } else {
+            console.log("usuário não inscrito")
             project.volunteers.push(user._id); // inscreve o user
+            user.volunteerIn.push(project._id); // inscreve o projeto
         }
         await Project.findOneAndUpdate({ _id: id }, { volunteers: project.volunteers });
+        await User.findOneAndUpdate({ _id: user._id }, { volunteerIn: user.volunteerIn });
 
-        return res.json(project);
+        return res.json([project, user]);
     },
 
+    // Create new post
     async newPost(req, res) {
         const project = await Project.findOne({ _id: req.params.id });
         let arrayPosts = [];
@@ -164,5 +174,23 @@ module.exports = {
         const updatedUser = await Project.findOneAndUpdate({ _id: req.params.id }, {posts: arrayPosts});
         console.log(updatedUser);
         return res.json(updatedUser);
+    },
+
+    // Give presence to users
+    async attendance(req, res) {
+
+        const project = await Project.findOneAndUpdate({ _id: req.params.id }, req.body);
+
+        // para cada req.volunteersParticipated, update user no campo volunteerParticipated
+        console.log("req.volunteersParticipated", req.body.volunteersParticipated)
+        for (let count = 0; count < req.body.volunteersParticipated.length; count++) {
+            console.log("req.volunteersParticipated[count]", req.body.volunteersParticipated[count])
+            const userEncontrado = await User.findOne({ _id: req.body.volunteersParticipated[count] });
+            userEncontrado.volunteerParticipated.push(req.params.id);
+            await User.findOneAndUpdate({ _id: userEncontrado }, {volunteerParticipated: userEncontrado.volunteerParticipated});
+            console.log("userEncontrado", userEncontrado)
+        }
+
+        return res.json(project)
     }
 }

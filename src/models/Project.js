@@ -11,8 +11,8 @@ const ProjectSchema = new mongoose.Schema({
     description: { type: String, required: true },
     quantityBenefited: { type: String, required: true },
     quantityVolunteers: { type: String, required: true },
-    projectColor: {type: String, required: true },
     volunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: false }],
+    volunteersParticipated: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: false }],
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "ProjectPost", required: false }],
     improvement: { type: String, required: false },
     status: { type: String, required: true }

@@ -15,7 +15,10 @@ const UserSchema = new mongoose.Schema({
     gender: { type: String, required: false },
 
     cnpj: { type: String, required: false, unique: true },
-    razaoSocial: { type: String, required: false }
+    razaoSocial: { type: String, required: false },
+
+    volunteerIn: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project", required: false }],
+    volunteerParticipated: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project", required: false }]
 
 }, { timestamps: {} });
 

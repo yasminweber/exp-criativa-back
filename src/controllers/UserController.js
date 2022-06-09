@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     //cadastro
@@ -23,7 +24,7 @@ module.exports = {
     // Get 1 User
     async showId(req, res) {
         try {
-            const user = await User.findOne({ _id: req.params.id });
+            const user = await User.findOne({ _id: req.params.id }).populate("volunteerIn").populate("volunteerParticipated");
             // console.log(user);
             return res.json(user);
         } catch (error) {
@@ -40,6 +41,18 @@ module.exports = {
             return res.json(updatedUser);
         } catch (error) {
             console.log("erro do update do user", error)
+            return res.status(400).json({ error });
+        }
+    },
+
+    async changeToken(req, res) {
+        try {
+            const user = await User.findOne({ _id: req.params.id })
+            console.log(user)
+            const token = jwt.sign({ user }, process.env.SECRET_API_KEY);
+            return res.json(token);
+        } catch (error) {
+            console.log(error)
             return res.status(400).json({ error });
         }
     }
