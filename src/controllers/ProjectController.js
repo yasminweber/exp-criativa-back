@@ -164,16 +164,13 @@ module.exports = {
         if (project.posts !== undefined){
             console.log(" dentro if", project.posts.length)
             for (let count = 0; count < project.posts.length; count ++) {
-                console.log(arrayPosts);
                 arrayPosts.push(project.posts[count]);
             }
         }
-
         const newPost = await Post.create({creator: user, projectRef: req.params.id, description: req.body.description});
         arrayPosts.push(newPost);
         const updatedUser = await Project.findOneAndUpdate({ _id: req.params.id }, {posts: arrayPosts});
-        console.log(updatedUser);
-        return res.json([updatedUser, newPost]);
+        return res.json(newPost._id);
     },
 
     // Give presence to users
