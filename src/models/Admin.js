@@ -6,8 +6,7 @@ const AdminSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     username: { type: String, required: true, lowercase: true },
     password: { type: String, required: true, select: false },
-    email: { type: String, required: true, unique: true, lowercase: true },
-    profileImage: { type: String, required: false },
+    email: { type: String, required: true, unique: true, lowercase: true }
     
 }, { timestamps: {} });
 

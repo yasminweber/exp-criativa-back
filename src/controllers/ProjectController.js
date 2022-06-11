@@ -169,11 +169,11 @@ module.exports = {
             }
         }
 
-        const newPost = await Post.create({creator: user, projectRef: req.params.id, title: req.body.title, description: req.body.description});
+        const newPost = await Post.create({creator: user, projectRef: req.params.id, description: req.body.description});
         arrayPosts.push(newPost);
         const updatedUser = await Project.findOneAndUpdate({ _id: req.params.id }, {posts: arrayPosts});
         console.log(updatedUser);
-        return res.json(updatedUser);
+        return res.json([updatedUser, newPost]);
     },
 
     // Give presence to users
