@@ -5,6 +5,7 @@ const auth = require('./config/auth');
 const userController = require('./controllers/UserController');
 const authController = require('./controllers/AuthController');
 const projectController = require('./controllers/ProjectController');
+const projectPostController = require('./controllers/ProjectPostController')
 
 const causeController = require('./controllers/CauseController');
 
@@ -44,6 +45,7 @@ routes.get('/cause', causeController.showAll);
 
 // Post de projeto
 routes.post('/newPost/:id', auth, projectController.newPost)
+routes.put('/posts/:id', auth, projectPostController.update)
 
 
 module.exports = routes;
