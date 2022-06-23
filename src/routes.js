@@ -9,7 +9,9 @@ const projectPostController = require('./controllers/ProjectPostController')
 
 const causeController = require('./controllers/CauseController');
 
-const adminController = require('./controllers/AdminController')
+const adminController = require('./controllers/AdminController');
+
+const testimonialController = require('./controllers/TestimonialController');
 
 routes.post('/register', userController.cadastro);
 routes.post('/login', authController.login);
