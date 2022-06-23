@@ -15,7 +15,8 @@ const ProjectSchema = new mongoose.Schema({
     volunteersParticipated: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", required: false }],
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "ProjectPost", required: false }],
     improvement: { type: String, required: false },
-    status: { type: String, required: true }
+    status: { type: String, required: true },
+    projectImage: { type: String, required: false }
 
 }, { timestamps: {} });
 
