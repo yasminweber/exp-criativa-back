@@ -49,7 +49,7 @@ routes.get('/cause', causeController.showAll);
 routes.post('/newPost/:id', auth, projectController.newPost)
 routes.put('/posts/:id', auth, projectPostController.update)
 
-routes.post('/testimonial', auth, testimonialController.newTestimonial)
+routes.post('/testimonial', auth, testimonialController.store)
 routes.get('/testimonials', testimonialController.showAll)
 
 
